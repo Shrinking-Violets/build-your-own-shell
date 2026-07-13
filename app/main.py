@@ -16,8 +16,10 @@ def main():
         elif command.startswith("type exit"):
             print(f"{command[5:]} is a shell builtin")
         elif command.startswith("type type"):
-            print(f"{command[5:]} is a shell builtin")    
+            print(f"{command[5:]} is a shell builtin")
+        elif command.startswith("type "):
+            print(f"{command[5:]} not found")    
         else:
-            print (f"{command}: not found")
+            print (f"{command}: command not found")
 if __name__ == "__main__":
     main()
