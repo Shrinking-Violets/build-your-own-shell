@@ -4,7 +4,6 @@ import sys
 def main():
     while True:
         sys.stdout.write("$ ")
-        pass
         command = input()
         
         if command == "exit":
