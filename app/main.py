@@ -7,7 +7,7 @@ def main():
         
         command = input()
         
-        if command == (type "exit", type "echo", type "type"):
+        if command == (type "exit ", type "echo ", type "type "):
             print(f"{command[5:]} is a shell builtin")
         elif command == "exit":
             break
