@@ -5,7 +5,7 @@ def main():
     sys.stdout.write("$ ")
 
 
-command = {input()}
+command = input()
 error = print ({command: "command not found"})
 if __name__ == "__main__":
     main()
