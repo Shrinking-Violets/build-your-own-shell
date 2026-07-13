@@ -7,16 +7,12 @@ def main():
         
         command = input()
         
-        if command == "exit":
+        if command == (type "exit", type "echo", type "type"):
+            print(f"{command[5:]} is a shell builtin")
+        elif command == "exit":
             break
         elif command.startswith("echo "):
             print(f"{command[5:]}")
-        elif command.startswith("type echo"):
-            print(f"{command[5:]} is a shell builtin")
-        elif command.startswith("type exit"):
-            print(f"{command[5:]} is a shell builtin")
-        elif command.startswith("type type"):
-            print(f"{command[5:]} is a shell builtin")
         elif command.startswith("type "):
             print(f"{command[5:]} not found")    
         else:
