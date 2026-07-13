@@ -35,5 +35,7 @@ def main():
 
         elif command.startswith("exit "):
             exit(0)
+        else:
+            print(f"{command}: command not found")
 if __name__ == "__main__":
     main()
