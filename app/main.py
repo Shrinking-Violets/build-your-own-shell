@@ -7,7 +7,21 @@ def main():
         command = input()
 
         builtin_comm = {"exit", "echo", "type"}
+        custom_comm = os.environ.get("")
+        cust_dict = custom_comm.split(os.pathsep)
+        ext1 = [""]
+        if sys.platform == "win32":
+                ext1 = [".exe", ".bat", ".cmd", ""]
+                found = False
+                for dictionary in cust_dict:
+                    for ex1 in ext1:
+                        full_path = os.path.join(dictionary, f"{command[5:]}{ex1}")
 
+                        if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
+                            print(f"{command[5:]} is {full_path}")
+                            found = True
+                if not found:
+                    print(f"{command[5:]} not found")
         if command.startswith("echo "):
             print(f"{command[5:]}")
         elif command.startswith("type "):
