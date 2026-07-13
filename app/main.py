@@ -1,27 +1,31 @@
 import sys
-buildin_fun = ["echo", "exit", "type"]
-exit = exit(0)
-echo = lambda x: print()
-type = lambda x: print()
+buildin_fun = {
+   "exit": lambda _: sys.exit(0),
+    "echo": lambda _args: print(f"{' '.join(_args)}", flush=True),
+    "type": lambda _args: print(f"{_args[0]} is a shell builtin", flush=True)
+    if _args[0] in buildin_fun
+    else print(f"{_args[0]}: not found", flush=True),
+}
+
+def runCommand(cmd: str, args):
+    if cmd in buildin_fun:
+        buildin_fun[cmd](args)
+    elif cmd:
+        print(f"{cmd}: command not found")
+
+
 def main():
     while True:
         sys.stdout.write("$ ")
-        
-        command = input()
-
-        if command == "exit":
+        sys.stdout.flush()  
+        line = sys.stdin.readline()
+        if not line:  
             break
-        elif command.startswith("echo "):
-            print(f"{command[5:]}")
-        elif command.startswith("type echo"):
-            print(f"{command[5:]} is a shell builtin")
-        elif command.startswith("type exit"):
-            print(f"{command[5:]} is a shell builtin")
-        elif command.startswith("type type"):
-            print(f"{command[5:]} is a shell builtin")
-        elif command.startswith("type "):
-            print(f"{command[5:]} not found")    
-        else:
-            print (f"{command}: command not found")
+        line = line.strip()
+        if not line: 
+            continue
+        parts = line.split()  
+        cmd, *args = parts
+        runCommand(cmd, args)
 if __name__ == "__main__":
     main()
