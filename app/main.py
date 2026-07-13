@@ -24,7 +24,7 @@ def main():
                 found = False
 
                 for dictionary in dictionaries:
-                    full_path = os.path.join(dictionary, f"{command[5:]}{ex}")
+                    full_path = os.path.join(dictionary, f"{command[5:]}{ext}")
 
                     if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
                         print(f"{command[5:]} is {full_path}")
