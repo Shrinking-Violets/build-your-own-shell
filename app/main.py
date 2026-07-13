@@ -34,7 +34,7 @@ def main():
                     print(f"{command[5:]} not found")
 
         elif command.startswith("exit "):
-            exit(0)
+            break
         else:
             print(f"{command}: command not found")
 if __name__ == "__main__":
