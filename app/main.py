@@ -24,11 +24,12 @@ def main():
                 found = False
 
                 for dictionary in dictionaries:
-                    full_path = os.path.join(dictionary, f"{command[5:]}{ext}")
+                    for ex in ext:
+                        full_path = os.path.join(dictionary, f"{command[5:]}{ex}")
 
-                    if os.path.isfile(full_path) or os.access(full_path, os.X_OK):
-                        print(f"{command[5:]} is {full_path}")
-                        found = True
+                        if os.path.isfile(full_path) or os.access(full_path, os.X_OK):
+                            print(f"{command[5:]} is {full_path}")
+                            found = True
                 if not found:
                     print(f"{command[5:]} not found")
 
