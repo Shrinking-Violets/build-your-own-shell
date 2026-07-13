@@ -1,5 +1,6 @@
 import sys
 import os
+import subprocess
 
 def main():
     while True:
@@ -7,7 +8,7 @@ def main():
         command = input()
 
         builtin_comm = {"exit", "echo", "type"}
-        custom_comm = os.environ.get("")
+        custom_comm = os.path.exists
         cust_dict = custom_comm.split(os.pathsep)
         ext1 = [""]
         if sys.platform == "win32":
