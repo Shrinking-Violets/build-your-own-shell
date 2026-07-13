@@ -4,10 +4,11 @@ import sys
 def main():
     while True:
         sys.stdout.write("$ ")
+        
         command = input()
         
         if command == "exit":
-            exit(0)
+            break
         elif command.startswith("echo "):
             print(f"{command[5:]}\n")
         else:
