@@ -9,7 +9,7 @@ def main():
         
         if command == "exit":
             exit(0)
-        elif command == input(echo ):
+        elif command == input("echo: "):
             print(f"{command}\n")
         else:
             print (f"{command}: command not found")
