@@ -33,7 +33,7 @@ def main():
                 if not found:
                     print(f"{command[5:]} not found")
 
-        elif command.startswith("exit "):
+        elif command == "exit":
             break
         else:
             print(f"{command}: command not found")
