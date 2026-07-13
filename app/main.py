@@ -2,7 +2,7 @@ import sys
 
 
 def main():
-    for i in range(command):
+    for i in range():
         sys.stdout.write("$ ")
         pass
         command = input()
