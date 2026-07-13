@@ -1,31 +1,38 @@
 import sys
-buildin_fun = {
-   "exit": lambda _: sys.exit(0),
-    "echo": lambda _args: print(f"{' '.join(_args)}", flush=True),
-    "type": lambda _args: print(f"{_args[0]} is a shell builtin", flush=True)
-    if _args[0] in buildin_fun
-    else print(f"{_args[0]}: not found", flush=True),
-}
-
-def runCommand(cmd: str, args):
-    if cmd in buildin_fun:
-        buildin_fun[cmd](args)
-    elif cmd:
-        print(f"{cmd}: command not found")
-
+import os
 
 def main():
     while True:
         sys.stdout.write("$ ")
-        sys.stdout.flush()  
-        line = sys.stdin.readline()
-        if not line:  
-            break
-        line = line.strip()
-        if not line: 
-            continue
-        parts = line.split()  
-        cmd, *args = parts
-        runCommand(cmd, args)
+        command = input()
+
+        builtin_comm = {"exit", "echo", "type"}
+
+        if command.startswith("echo "):
+            print(f"{command[5:]} is a shell builtin")
+        elif command.startswith("type "):
+            if command[5:] in builtin_comm:
+                print(f"{command[5:]} is a shell builtin")
+            else:
+                path_env = os.environ.get("PATH", "")
+
+                dictionaries = path_env.split(os.pathsep)
+                ext = [""]
+
+                if sys.platform == "win32":
+                    ext = [".exe", ".bat", ".cmd", ""]
+                found = False
+
+                for dictionary in dictionaries:
+                    full_path = os.path.join(dictionary, f"{command[5:]}{ex}")
+
+                    if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
+                        print(f{command[5:] is {full_path}})
+                        found = True
+                if not found:
+                    print(f"{command[5:]} not found")
+
+        elif command.startswith("exit "):
+            exit(0)
 if __name__ == "__main__":
     main()
