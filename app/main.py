@@ -10,7 +10,7 @@ def main():
         if command == "exit":
             exit(0)
         elif command == "echo":
-            print(f"echo {command}\n")
+            print(f"{command}\n")
         else:
             print (f"{command}: command not found")
 if __name__ == "__main__":
