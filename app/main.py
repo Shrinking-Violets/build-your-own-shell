@@ -10,7 +10,7 @@ def main():
         if command == "exit":
             break
         elif command.startswith("echo "):
-            print(f"{command[5:]}\n")
+            print(f"{command[5:]}")
         else:
             print (f"{command}: command not found")
 if __name__ == "__main__":
