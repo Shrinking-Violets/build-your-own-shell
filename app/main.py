@@ -9,7 +9,7 @@ def main():
         builtin_comm = {"exit", "echo", "type"}
 
         if command.startswith("echo "):
-            print(f"{command[5:]} is a shell builtin")
+            print(f"{command[5:]}")
         elif command.startswith("type "):
             if command[5:] in builtin_comm:
                 print(f"{command[5:]} is a shell builtin")
