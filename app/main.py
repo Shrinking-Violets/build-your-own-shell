@@ -9,7 +9,7 @@ def main():
 
         builtin_comm = {"exit", "echo", "type"}
         custom_comm = os.path.exists
-        cust_dict = custom_comm.split(os.pathsep)
+        cust_dict = custom_comm(os.pathsep)
         ext1 = [""]
         if sys.platform == "win32":
                 ext1 = [".exe", ".bat", ".cmd", ""]
