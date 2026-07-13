@@ -6,6 +6,6 @@ def main():
 
 
 command = input()
-error = print ({command: "command not found"})
+error = print (f"{command}: command not found")
 if __name__ == "__main__":
     main()
