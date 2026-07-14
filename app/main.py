@@ -52,7 +52,7 @@ def main():
             path = get_path(program)
             
             if path:
-                subprocess.run([path] + args)
+                subprocess.run([path] + args, executable=path)
             else:
                 print(f"{command}: command not found")
 if __name__ == "__main__":
