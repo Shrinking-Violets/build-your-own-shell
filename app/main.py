@@ -18,7 +18,7 @@ def get_path(command):
                 return full_path
     return None        
 def main():
-    builtin_comm = {"exit", "echo", "type", "pwd"}
+    builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
@@ -46,7 +46,13 @@ def main():
         elif command.startswith("pwd"):
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
-
+        elif command.startswith("cd"):
+            path_cd = os.environ.get("PATH", "")
+            if path_cd:
+                curr_dir=path_cd
+                continue
+            else:
+                os.chdir(path_cd)
         else:
             parts = command.split()
             program = parts[0]
