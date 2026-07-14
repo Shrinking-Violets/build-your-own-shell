@@ -50,8 +50,11 @@ def main():
             path_cd = command[3:]
             if command.startswith("pwd"):
                 print(f"{path_cd}")
+            elif path_cd:
+               cd_change = os.chdir(path_cd)
+               return cd_change
             else:
-                os.chdir(path_cd)
+                print(f"{path_cd}: No such file or directory")
         else:
             parts = command.split()
             program = parts[0]
