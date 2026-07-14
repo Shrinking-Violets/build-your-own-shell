@@ -38,9 +38,12 @@ def main():
         elif command == "exit":
             break
         elif command == (""):
-            path = get_path(command[5:])
+
+            path = get_path(command[5])
+            args = path.split
             if os.path.isfile(path) and os.access(path, os.X_OK):
-                 subprocess.run([path])
+                 subprocess.run([path] + args)
+                 
             else:
                print(f"{command[5:]} not found") 
         else:
