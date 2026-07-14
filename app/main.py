@@ -7,47 +7,53 @@ def get_path(command):
 
     dictionaries = path_env.split(os.pathsep)
     ext = [""]
-
+    
     if sys.platform == "win32":
         ext = [".exe", ".bat", ".cmd", ""]
     found = False
     for dictionary in dictionaries:
         for ex in ext:
             full_path = os.path.join(dictionary, f"{command}{ex}")
-            return full_path
+            if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
+                return full_path
+    return None        
 def main():
+    builtin_comm = {"exit", "echo", "type"}
     while True:
         sys.stdout.write("$ ")
+        sys.stdout.flush()
         command = input()
 
-        builtin_comm = {"exit", "echo", "type"}
-       
-        if command.startswith("echo "):
+        if not command:
+            continue
+        if command == "exit":
+            break
+        elif command.startswith("echo "):
             print(f"{command[5:]}")
+
         elif command.startswith("type "):
-            if command[5:] in builtin_comm:
-                print(f"{command[5:]} is a shell builtin")
+            cmd = command[5:]
+
+            if cmd in builtin_comm:
+                print(f"{cmd} is a shell builtin")
             else:
-                path = get_path(command[5:])
-                if os.path.isfile(path) and os.access(path, os.X_OK):
-                    print(f"{command[5:]} is {path}")
+                path = get_path(cmd)
+                if path:
+                    print(f"{cmd} is {path}")
                     
                 else:
                     print(f"{command[5:]} not found")
 
-        elif command == "exit":
-            break
-        elif command == (""):
-
-            parts = command.split()
-            args = parts[1:]
-            path = get_path(parts)
-            if os.path.isfile(path) and os.access(path, os.X_OK):
-                 subprocess.run([parts[0]] + args)
-                 
-            else:
-               print(f"{command[5:]} not found") 
+        
         else:
-            print(f"{command}: command not found")
+            parts = command.split()
+            program = parts[0]
+            args = parts[1:]
+            path = get_path(program)
+            
+            if path:
+                subprocess.run([path] + args)
+            else:
+                print(f"{command}: command not found")
 if __name__ == "__main__":
     main()
