@@ -52,7 +52,7 @@ def main():
                 print(f"{path_cd}")
             elif path_cd:
                cd_change = os.chdir(path_cd)
-               return cd_change
+               print(f"{cd_change}")
             else:
                 print(f"{path_cd}: No such file or directory")
         else:
