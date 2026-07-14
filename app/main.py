@@ -18,7 +18,7 @@ def get_path(command):
                 return full_path
     return None        
 def main():
-    builtin_comm = {"exit", "echo", "type"}
+    builtin_comm = {"exit", "echo", "type", "pwd"}
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
@@ -43,6 +43,9 @@ def main():
                     
                 else:
                     print(f"{command[5:]} not found")
+        elif command.startswith("pwd"):
+            current_dir = path_env = os.environ.get("PATH", "")
+            print (f{current_dir})
 
         
         else:
