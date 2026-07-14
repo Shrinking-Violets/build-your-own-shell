@@ -40,7 +40,7 @@ def main():
         elif command == (""):
 
             path = command.split()
-            args = get_path(path)
+            args = get_path(path[1:])
             if os.path.isfile(path) and os.access(path, os.X_OK):
                  subprocess.run([path] + args)
                  
