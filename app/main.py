@@ -47,7 +47,7 @@ def main():
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
         elif command.startswith("cd"):
-            path_cd = os.environ.get("PATH", "")
+            path_cd = command[3:]
             if command.startswith("pwd"):
                 print(f"{path_cd}")
             else:
