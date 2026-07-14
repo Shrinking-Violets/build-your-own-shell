@@ -39,8 +39,9 @@ def main():
             break
         elif command == (""):
 
-            path = command.split()
-            args = get_path(path[1:])
+            parts = command.split()
+            args = parts[1:]
+            path = get_path(parts[0])
             if os.path.isfile(path) and os.access(path, os.X_OK):
                  subprocess.run([path] + args)
                  
