@@ -41,9 +41,9 @@ def main():
 
             parts = command.split()
             args = parts[1:]
-            path = get_path(parts[0])
+            path = get_path(parts)
             if os.path.isfile(path) and os.access(path, os.X_OK):
-                 subprocess.run([path] + args)
+                 subprocess.run([parts[0]] + args)
                  
             else:
                print(f"{command[5:]} not found") 
