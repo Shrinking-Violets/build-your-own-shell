@@ -45,8 +45,8 @@ def main():
                     print(f"{command[5:]} not found")
         elif command.startswith("pwd"):
             curr_dir = os.environ.get("PATH", "")
-            current_dir = curr_dir.strip[0]
-            print(f"{current_dir}")
+            current_dir = curr_dir.split(os.pathsep)
+            print(f"{current_dir[0]}")
 
         else:
             parts = command.split()
