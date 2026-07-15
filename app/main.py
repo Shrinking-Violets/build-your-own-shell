@@ -46,8 +46,9 @@ def main():
         elif command.startswith("pwd"):
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
-        elif command.startswith("cd ~"):
-                os.getenv('HOME')
+        elif command == "cd ~":
+            home = os.getenv('HOME')
+            print(f"{home}")    
         elif command.startswith("cd"):
             cd_dir = command[3:]
             if os.path.isdir(cd_dir):
