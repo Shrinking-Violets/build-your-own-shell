@@ -46,14 +46,14 @@ def main():
         elif command.startswith("pwd"):
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
+        elif command.startswith("cd ~"):
+                os.getenv('HOME')
         elif command.startswith("cd"):
             cd_dir = command[3:]
             if os.path.isdir(cd_dir):
                cd_change = os.chdir(cd_dir)
             else:
                 print(f"{command[3:]}: No such file or directory")
-        elif command.startswith("cd ~"):
-                os.getenv('HOME')
         else:
             parts = command.split()
             program = parts[0]
