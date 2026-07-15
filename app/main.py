@@ -51,7 +51,7 @@ def main():
             if os.path.isdir(command[3:]):
                print(f"{cd_change}")
             else:
-                print(f"{path_cd}: No such file or directory")
+                print(f"{command[3:]}: No such file or directory")
         else:
             parts = command.split()
             program = parts[0]
