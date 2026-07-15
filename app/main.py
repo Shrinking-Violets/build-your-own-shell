@@ -47,10 +47,8 @@ def main():
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
         elif command.startswith("cd"):
-            
-            path_cd = os.path.isdir(command[3:])
-            if path_cd:
-               cd_change = os.chdir(path_cd)
+            cd_change = os.chdir(command[3:])
+            if os.path.isdir(command[3:]):
                print(f"{cd_change}")
             else:
                 print(f"{path_cd}: No such file or directory")
