@@ -75,7 +75,7 @@ def main():
             if os.path.isdir(cd_dir):
                cd_change = os.chdir(cd_dir)
             else:
-                print(f"{cmd}: {args[1]} No such file or directory")
+                print(f"{cmd}: {args[1]}: No such file or directory")
         else:
             
             program = args[0]
