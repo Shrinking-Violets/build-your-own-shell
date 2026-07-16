@@ -58,16 +58,16 @@ def main():
             if cmd in builtin_comm:
                 if len(args) == 1:
                     print(f"{cmd} is a shell builtin")
-            else:
-                target = args[1]
-                if target in builtin_comm:
-                    print(f"{target} is a shell builtin ")
                 else:
-                    path = get_path(target)
-                    if path:
-                        print(f"{target} is a shell builtin")
+                    target = args[1]
+                    if target in builtin_comm:
+                        print(f"{target} is a shell builtin ")
                     else:
-                        print(f"{cmd} not found")
+                        path = get_path(target)
+                        if path:
+                            print(f"{target} is a shell builtin")
+                        else:
+                            print(f"{cmd} not found")
         elif cmd == "pwd":
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
