@@ -21,17 +21,32 @@ def parse_command(command):
     args = []
     current = ""
     is_single_quote = False
+    is_double_quote = False
+
     for ch in command:
+        
+        if is_single_quote:
+            if ch == "'":
+                is_single_quote = not is_single_quote
+            else:
+                current += ch
+            continue    
+        if is_double_quote:
+            if ch == '"':
+                is_double_quote = not is_double_quote
+            else:
+                current += ch
+            continue
         if ch == "'":
             is_single_quote = not is_single_quote
-        elif is_single_quote:
-            current += ch
+        elif ch == '"':
+            is_double_quote = not is_double_quote
         elif ch == " ":
             if current:
                 args.append(current)  
                 current = ""
         else:
-            current += ch
+            current =+ ch
     if current:
         args.append(current)
 
