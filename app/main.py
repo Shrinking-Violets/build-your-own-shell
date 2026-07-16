@@ -79,7 +79,7 @@ def main():
         else:
             args = parse_command(command)
             program = args[0]
-            argu = argu[1:]
+            argu = args[1:]
             path = get_path(program)
             
             if path:
