@@ -58,9 +58,9 @@ def main():
             if cmd in builtin_comm:
                 print(f"{cmd} is a shell builtin")
             else:
-                path = get_path(args[1:])
+                path = get_path(args[1])
                 if path:
-                    print(args[0] is args[1:])
+                    print((args[0]) (args[1:]))
     
                 else:
                     print(f"{cmd} not found")
@@ -71,7 +71,7 @@ def main():
             home = os.getenv('HOME')
             os.chdir(home)    
         elif cmd == "cd":
-            cd_dir = args[1:]
+            cd_dir = args[1]
             if os.path.isdir(cd_dir):
                cd_change = os.chdir(cd_dir)
             else:
@@ -80,7 +80,7 @@ def main():
             
             program = args[0]
             argu = args[1:]
-            path = get_path(argu)
+            path = get_path(program)
             
             if path:
                 subprocess.run([program] + argu, executable=path)
