@@ -44,11 +44,11 @@ def main():
         sys.stdout.flush()
         command = input()
         args = parse_command(command)
-        
-
+        cmds = args
         if not cmds:
             continue
         cmds = args[0]
+
         if cmds == "exit":
             break
         elif cmds == "echo":
