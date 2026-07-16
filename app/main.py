@@ -44,15 +44,15 @@ def main():
         sys.stdout.flush()
         command = input()
         args = parse_command(command)
-        cmds = args
+        
         if not cmds:
             continue
-        #cmds = args[0]
+        cmds = args[0]
 
         if cmds == "exit":
             break
         elif cmds == "echo":
-            print(f"{cmds[1:]}")
+            print(f"{args[1:]}")
 
         elif cmds == "type":
             if cmds in builtin_comm:
@@ -60,7 +60,7 @@ def main():
             else:
                 path = get_path(cmds)
                 if path:
-                    print(f"{cmds[1:]} is {path}")
+                    print(f"{args[1:]} is {path}")
     
                 else:
                     print(f"{cmds} not found")
@@ -71,7 +71,7 @@ def main():
             home = os.getenv('HOME')
             os.chdir(home)    
         elif cmds == "cd":
-            cd_dir = cmds[1:]
+            cd_dir = args[1:]
             if os.path.isdir(cd_dir):
                cd_change = os.chdir(cd_dir)
             else:
