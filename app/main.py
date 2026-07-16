@@ -17,44 +17,49 @@ def get_path(command):
             if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
                 return full_path
     return None        
+def parse_command(command):
+    
+    if args[0] == "echo":
+
+
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
         command = input()
+        args = parse_command(command)
+        cmds = args[0]
 
-        if not command:
+        if not cmds:
             continue
-        if command == "exit":
+        if cmds == "exit":
             break
-        elif command.startswith("echo "):
-            print(f"{command[5:]}")
+        elif cmds == "echo ":
+            print(f"cmds")
 
-        elif command.startswith("type "):
-            cmd = command[5:]
-
-            if cmd in builtin_comm:
-                print(f"{cmd} is a shell builtin")
+        elif cmds == "type ":
+            if cmds in builtin_comm:
+                print(f"{cmds} is a shell builtin")
             else:
-                path = get_path(cmd)
+                path = get_path(cmds)
                 if path:
-                    print(f"{cmd} is {path}")
+                    print(f"{cmds} is {path}")
                     
                 else:
-                    print(f"{command[5:]} not found")
-        elif command.startswith("pwd"):
+                    print(f"{cmds} not found")
+        elif cmds == "pwd"):
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
         elif command == "cd ~":
             home = os.getenv('HOME')
             os.chdir(home)    
-        elif command.startswith("cd"):
-            cd_dir = command[3:]
+        elif cmds == "cd":
+            cd_dir = cmds
             if os.path.isdir(cd_dir):
                cd_change = os.chdir(cd_dir)
             else:
-                print(f"{command[3:]}: No such file or directory")
+                print(f"{cmds}: No such file or directory")
         else:
             parts = command.split()
             program = parts[0]
