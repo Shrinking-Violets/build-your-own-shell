@@ -60,7 +60,7 @@ def main():
             else:
                 path = get_path(args[1])
                 if path:
-                    print((args[0]) (args[1:]))
+                    print("(args[1]) is a shell builtin")
     
                 else:
                     print(f"{cmd} not found")
