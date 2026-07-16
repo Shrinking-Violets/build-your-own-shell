@@ -7,7 +7,9 @@ def get_path(command):
 
     dictionaries = path_env.split(os.pathsep)
     ext = [""]
-    
+    print("command =", command)
+    print("platform =", sys.platform)
+    print("PATH =", os.environ.get("PATH"))
     if sys.platform == "win32":
         ext = [".exe", ".bat", ".cmd", ""]
     found = False
@@ -55,17 +57,18 @@ def main():
             print(*args[1:])
 
         elif cmd == "type":
-            if cmd in builtin_comm:
                 if len(args) == 1:
                     print(f"{cmd} is a shell builtin")
                 else:
                     target = args[1]
+                    print("target =", target)
+                    print("builtin_comm =", builtin_comm)
                     if target in builtin_comm:
                         print(f"{target} is a shell builtin ")
                     else:
                         path = get_path(target)
                         if path:
-                            print(f"{target} is a shell builtin")
+                            print(f"{target} is {path}")
                         else:
                             print(f"{cmd} not found")
         elif cmd == "pwd":
