@@ -17,26 +17,26 @@ def get_path(command):
             if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
                 return full_path
     return None        
-def parse_command(command):
+#def parse_command(command):
     
-    if args[0] == "echo":
+    #if args[0] == "echo":
 
 
-def main():
+def main(command):
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
     while True:
         sys.stdout.write("$ ")
         sys.stdout.flush()
-        command = input()
-        args = parse_command(command)
+        line = input()
+        args = command(line)
         cmds = args[0]
 
         if not cmds:
             continue
         if cmds == "exit":
             break
-        elif cmds == "echo ":
-            print(f"cmds")
+        elif cmds == "echo":
+            print(f"{cmds}")
 
         elif cmds == "type ":
             if cmds in builtin_comm:
@@ -48,7 +48,7 @@ def main():
                     
                 else:
                     print(f"{cmds} not found")
-        elif cmds == "pwd"):
+        elif cmds == "pwd":
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
         elif command == "cd ~":
