@@ -80,7 +80,7 @@ def main():
             args = parse_command(command)
             program = args[0]
             argu = args[1:]
-            path = get_path(program)
+            path = get_path(argu)
             
             if path:
                 subprocess.run([program] + argu, executable=path)
