@@ -58,9 +58,9 @@ def main():
             if cmd in builtin_comm:
                 print(f"{cmd} is a shell builtin")
             else:
-                path = get_path(cmd)
+                path = get_path(args[1:])
                 if path:
-                    print(*args[1:] is {path})
+                    print(args[0] is args[1:])
     
                 else:
                     print(f"{cmd} not found")
@@ -77,7 +77,7 @@ def main():
             else:
                 print(f"{cmd}: No such file or directory")
         else:
-            args = parse_command(command)
+            
             program = args[0]
             argu = args[1:]
             path = get_path(argu)
