@@ -47,7 +47,7 @@ def main():
         cmds = args
         if not cmds:
             continue
-        cmds = args[0]
+        #cmds = args[0]
 
         if cmds == "exit":
             break
