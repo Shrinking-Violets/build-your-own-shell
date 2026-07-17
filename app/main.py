@@ -22,9 +22,12 @@ def parse_command(command):
     current = ""
     is_single_quote = False
     is_double_quote = False
-
-    for ch in command:
-        
+    i = 0
+    while i < len(command):
+        ch = command[i]
+        current += command[i +1]
+        i += 2
+        continue
         if is_single_quote:
             if ch == "'":
                 is_single_quote = not is_single_quote
@@ -86,7 +89,7 @@ def main():
         elif cmd == "pwd":
             curr_dir = os.getcwd()
             print(f"{curr_dir}")
-        elif command == "cd ~":
+        elif cmd == "cd" and args[1] == "~":
             home = os.getenv('HOME')
             os.chdir(home)    
         elif cmd == "cd":
