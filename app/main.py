@@ -26,7 +26,7 @@ def parse_command(command):
     while i < len(command):
         ch = command[i]
 
-        if ch == '\\' and is_single_quote and  is_double_quote:
+        if ch == '\\' and not is_single_quote and  not is_double_quote:
             if i + 1 < len(command):
                 current += command[i +1]
                 i += 2    
@@ -38,13 +38,12 @@ def parse_command(command):
                 is_single_quote = not is_single_quote
             else:
                 current += ch
-            continue    
+               
         if is_double_quote:
             if ch == '"':
                 is_double_quote = not is_double_quote
             else:
                 current += ch
-            continue
         if ch == "'":
             is_single_quote = not is_single_quote
         elif ch == '"':
@@ -56,6 +55,7 @@ def parse_command(command):
        
         else:
             current += ch
+            i += 1
     if current:
         args.append(current)
 
