@@ -26,7 +26,7 @@ def parse_command(command):
     while i < len(command):
         ch = command[i]
 
-        if ch == "\\" and is_single_quote and  is_double_quote:
+        if ch == '\ ' and is_single_quote and  is_double_quote:
             current += command[i +1]
             i += 2    
             continue
