@@ -41,6 +41,11 @@ def parse_command(command):
         if is_double_quote:
             if ch == '"':
                 is_double_quote = not is_double_quote
+            elif ch == '\\': 
+                if i + 1 < len(command):
+                    current += command[i +1]
+                    i += 2    
+                    continue
             else:
                 current += ch
             i += 1
