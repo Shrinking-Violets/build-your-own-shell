@@ -53,9 +53,9 @@ def parse_command(command):
                 args.append(current)  
                 current = ""
        
-        else:
-            current += ch
-            i += 1
+            else:
+                current += ch
+        i += 1
     if current:
         args.append(current)
 
