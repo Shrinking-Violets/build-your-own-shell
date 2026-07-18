@@ -105,13 +105,14 @@ def main():
                cd_change = os.chdir(cd_dir)
             else:
                 print(f"{cmd}: {args[1]}: No such file or directory")
-        elif ">" or "1>" in command:
-            text = before, sep, after = args[1:].patition((">") or ("1>"))
-            before1 = print("Before:", before)
-            after1 = print("After:", after)
-
-            with open(after1, "a") as file:
-                file.write(f"{before1}")
+        elif ">" or "1>" in args:
+             
+            idx = args.index(">") or args.index("1>")
+            command_args = args[:idx]
+            file_name = args[idx:]
+            
+            with open(file_name, "a") as file:
+                file.write(f"{command_args}")
             
         else:
             
