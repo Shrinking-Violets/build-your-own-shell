@@ -111,7 +111,7 @@ def main():
             command_args = args[:idx]
             #file_name = str(args[idx:])
             
-            with open(str(args[idx:]), "a") as file:
+            with open((args[idx + 1]), "a") as file:
                 file.write(f"{command_args}")
             
         else:
