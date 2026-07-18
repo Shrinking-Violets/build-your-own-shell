@@ -126,25 +126,31 @@ def main():
                     f.write(curr_dir + "\n")
             else:
                 print(curr_dir)
-        elif cmd == "cd" and args[1] == "~":
-            home = os.getenv('HOME')
-            os.chdir(home)    
         elif cmd == "cd":
-            cd_dir = args[1]
-            if os.path.isdir(cd_dir):
-               cd_change = os.chdir(cd_dir)
+            if len(args) < 2:
+                print("cd: missing argument")
+            elif args[1] == "~":
+                home = os.getenv('HOME')
+                os.chdir(home)
             else:
-                print(f"{cmd}: {args[1]}: No such file or directory")
+                cd_dir = args[1]
+                if os.path.isdir(cd_dir):
+                    os.chdir(cd_dir)
+                else:
+                    print(f"{cmd}: {args[1]}: No such file or directory")
         else:
             
             program = args[0]
             argu = args[1:]
             path = get_path(program)
-            
-            if filename:
-                with open(filename, "w") as f:
-                    subprocess.run([program] + argu, executable=path, stdout=f)
+
+            if path is None:
+                print(f"{program}: command not found")
             else:
-                subprocess.run([program] + argu, executable=path)
+                if filename:
+                    with open(filename, "w") as f:
+                        subprocess.run([program] + argu, executable=path, stdout=f)
+                else:
+                    subprocess.run([program] + argu, executable=path)
 if __name__ == "__main__":
     main()
