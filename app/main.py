@@ -72,6 +72,7 @@ def main():
         cmd = args
         if not cmd:
             continue
+        
         idx = -1
         if ">" in args:
             idx = args.index(">")
@@ -80,20 +81,21 @@ def main():
 
         filename = None
         if idx != -1:
-            command = args[:idx]
             filename = args[idx + 1]
-
-            with open(filename, "a") as file:
-                subprocess.run(command, stdout=file)
-        else:
-            subprocess.run([program] + argu, executable=path)
+            args = args[:idx]
 
         cmd = args[0]
 
         if cmd == "exit":
             break
         elif cmd == "echo":
-            print(*args[1:])
+            output = " ".join(args[1:])
+
+            if filename:
+                with open(filename, "w") as f:
+                    f.write(output + "\n")
+            else:
+                print(output)
 
         elif cmd == "type":
                 if len(args) == 1:
@@ -102,7 +104,7 @@ def main():
                     target = args[1]
 
                     if target in builtin_comm:
-                        print(f"{target} is a shell builtin ")
+                        print(f"{target} is a shell builtin")
                     else:
                         path = get_path(target)
                         if path:
@@ -111,7 +113,11 @@ def main():
                             print(f"{target} not found")
         elif cmd == "pwd":
             curr_dir = os.getcwd()
-            print(f"{curr_dir}")
+            if filename:
+                with open(filename, "w") as f:
+                    f.write(curr_dir + "\n")
+            else:
+                print(curr_dir)
         elif cmd == "cd" and args[1] == "~":
             home = os.getenv('HOME')
             os.chdir(home)    
@@ -121,17 +127,16 @@ def main():
                cd_change = os.chdir(cd_dir)
             else:
                 print(f"{cmd}: {args[1]}: No such file or directory")
-
-            
         else:
             
             program = args[0]
             argu = args[1:]
             path = get_path(program)
             
-            if path:
-                subprocess.run([program] + argu, executable=path)
+            if filename:
+                with open(filename, "w") as f:
+                    subprocess.run([program] + argu, executable=path, stdout=f)
             else:
-                print(f"{command}: command not found")
+                subprocess.run([program] + argu, executable=path)
 if __name__ == "__main__":
     main()
