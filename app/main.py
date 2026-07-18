@@ -109,9 +109,9 @@ def main():
              
             idx = args.index(">") or args.index("1>")
             command_args = args[:idx]
-            file_name = str(args[idx:])
+            #file_name = str(args[idx:])
             
-            with open(file_name, "a") as file:
+            with open(str(args[idx:]), "a") as file:
                 file.write(f"{command_args}")
             
         else:
