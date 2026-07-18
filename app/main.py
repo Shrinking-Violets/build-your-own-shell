@@ -53,6 +53,7 @@ def parse_command(command):
             if current:
                 args.append(current)  
                 current = ""
+    
         else:
             current += ch
         i += 1
@@ -104,6 +105,14 @@ def main():
                cd_change = os.chdir(cd_dir)
             else:
                 print(f"{cmd}: {args[1]}: No such file or directory")
+        elif ">" or "1>" in command:
+            text = before, sep, after = args[1:].patition((">") or ("1>"))
+            before1 = print("Before:", before)
+            after1 = print("After:", after)
+
+            with open(after1, "a") as file:
+                file.write(f"{before1}")
+            
         else:
             
             program = args[0]
