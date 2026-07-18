@@ -72,6 +72,22 @@ def main():
         cmd = args
         if not cmd:
             continue
+        idx = -1
+        if ">" in args:
+            idx = args.index(">")
+        elif "1>" in args:
+            idx = args.index("1>")
+
+        filename = None
+        if idx != -1:
+            command = args[:idx]
+            filename = args[idx + 1]
+
+            with open(filename, "a") as file:
+                subprocess.run(command, stdout=file)
+        else:
+            subprocess.run([program] + argu, executable=path)
+
         cmd = args[0]
 
         if cmd == "exit":
@@ -105,14 +121,7 @@ def main():
                cd_change = os.chdir(cd_dir)
             else:
                 print(f"{cmd}: {args[1]}: No such file or directory")
-        elif ">" or "1>" in args:
-             
-            idx = args.index(">") or args.index("1>")
-            command_args = args[:idx]
-            #file_name = str(args[idx:])
-            
-            with open((args[idx + 1]), "a") as file:
-                file.write(f"{command_args}")
+
             
         else:
             
