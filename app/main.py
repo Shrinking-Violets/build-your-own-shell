@@ -10,7 +10,7 @@ def get_path(command):
 
     if sys.platform == "win32":
         ext = [".exe", ".bat", ".cmd", ""]
-    found = False
+    
     for dictionary in dictionaries:
         for ex in ext:
             full_path = os.path.join(dictionary, f"{command}{ex}")
@@ -69,6 +69,21 @@ def parse_command(command):
         args.append(current)
 
     return args
+def print_error(message, stderr_filename):
+    if stderr_filename:
+        with open(stderr_filename, "w") as f:
+            print(message, file=f)
+    else:
+        print(message, file=sys.stderr)
+def print_output(message, stdout_filename):
+    if stdout_filename:
+        with open(stdout_filename, "w") as f:
+            print(message, file=f)
+    else:
+        print(message)
+def create_stderr_file(stderr_filename):
+    if stderr_filename:
+        open(stderr_filename, "w").close()
 
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
@@ -77,7 +92,10 @@ def main():
         sys.stdout.flush()
         command = input()
         args = parse_command(command)
-        cmd = args
+        if not args:
+            continue
+
+        cmd = args[0]
         if not cmd:
             continue
         stdout_idx = -1
@@ -103,53 +121,35 @@ def main():
             reverse=True,
         ):
             del args[idx:idx+2]
-        cmd = args[0]
+       
 
         if cmd == "exit":
             break
         elif cmd == "echo":
             output = " ".join(args[1:])
-            if stderr_filename:
-                open(stderr_filename, "w").close()
-            if stdout_filename:
-                with open(stdout_filename, "w") as f:
-                    f.write(output + "\n")
-            else:
-                print(output)
+            create_stderr_file(stderr_filename)
+            print_output(output, stdout_filename)
         elif cmd == "type":
-                if stderr_filename:
-                    open(stderr_filename, "w").close()
+                create_stderr_file(stderr_filename)
                 if len(args) == 1:
                     print(f"{cmd} is a shell builtin")
                 else:
                     target = args[1]
 
                     if target in builtin_comm:
-                        print(f"{target} is a shell builtin")
+                        print_output(f"{target} is a shell builtin", stdout_filename)
+                    elif (path := get_path(target)):
+                        print_output(f"{target} is {path}", stdout_filename)
                     else:
-                        path = get_path(target)
-                        
-                        if path:
-                            print(f"{target} is {path}")
-                        else:
-                            print(f"{target} not found")
+                        print_output(f"{target} not found", stdout_filename)
         elif cmd == "pwd":
             curr_dir = os.getcwd()
-            if stderr_filename:
-                open(stderr_filename, "w").close()
-            if stdout_filename:
-                with open(stdout_filename, "w") as f:
-                    f.write(curr_dir + "\n")
-            else:
-                print(curr_dir)
+            create_stderr_file(stderr_filename)
+            print_output(output, stdout_filename)
         elif cmd == "cd":
             message = "cd: missing argument"
             if len(args) < 2:
-                if stderr_filename:
-                    with open(stderr_filename, "w") as f:
-                        print(message, file=f)
-                else:
-                    print(message, file=sys.stderr)
+                print_error(f"{program}: command not found", stderr_filename)    
             elif args[1] == "~":
                 home = os.getenv('HOME')
                 os.chdir(home)
@@ -159,11 +159,7 @@ def main():
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    if stderr_filename:
-                        with open(stderr_filename, "w") as f:
-                            print(message, file=f)
-                    else:
-                        print(message, file=sys.stderr)
+                    print_error(message, stderr_filename)
         else:
             
             program = args[0]
@@ -171,13 +167,7 @@ def main():
             path = get_path(program)
 
             if path is None:
-                message = f"{program}: command not found"
-
-                if stderr_filename:
-                    with open(stderr_filename, "w") as f:
-                        print(message, file=f)
-                else:
-                    print(message, file=sys.stderr)
+                print_error(f"{program}: command not found", stderr_filename)
             else:
                 stdout_file = open(stdout_filename, "w") if stdout_filename else None
                 stderr_file = open(stderr_filename, "w") if stderr_filename else None
