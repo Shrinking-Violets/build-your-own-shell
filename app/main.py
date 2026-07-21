@@ -160,10 +160,19 @@ def main():
             if path is None:
                 print(f"{program}: command not found")
             else:
-                if filename:
-                    with open(filename, "w") as f:
-                        subprocess.run([program] + argu, executable=path, stdout=f)
-                else:
-                    subprocess.run([program] + argu, executable=path)
-if __name__ == "__main__":
+                stdout_file = open(stdout_filename, "w") if stdout_filename else None
+                stderr_file = open(stderr_filename, "w") if stderr_filename else None
+
+                try:
+                    subprocess.run(
+                        [program] + argu,
+                        executable=path,
+                        stdout=stdout_file,
+                        stderr=stderr_file,
+                    )
+                finally:
+                    if stdout_file:
+                        stdout_file.close()
+                    if stderr_file:
+                        stderr_file.close()
     main()
