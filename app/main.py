@@ -114,6 +114,8 @@ def main():
             if stdout_filename:
                 with open(stdout_filename, "w") as f:
                     f.write(output + "\n")
+            if stderr_filename:
+                open(stderr_filename, "w").close()
             else:
                 print(output)
         elif cmd == "type":
@@ -135,8 +137,10 @@ def main():
             if stdout_filename:
                 with open(stdout_filename, "w") as f:
                     f.write(output + "\n")
+            if stderr_filename:
+                open(stderr_filename, "w").close()
             else:
-                print(output)
+                print(curr_dir)
         elif cmd == "cd":
             if len(args) < 2:
                 print("cd: missing argument",file=sys.stderr)
