@@ -92,14 +92,13 @@ def main():
         if "2>" in args:
             stderr_idx = args.index("2>")
 
-        filename = None
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
-            args = args[:stdout_idx]
+            
         
         if stderr_idx != -1:
             stderr_filename = args[stderr_idx +1]
-            args = args[:stderr_idx]
+            
         for idx in sorted(
             [i for i in [stdout_idx, stderr_idx] if i != -1],
             reverse=True,
@@ -112,12 +111,11 @@ def main():
         elif cmd == "echo":
             output = " ".join(args[1:])
 
-            if filename:
-                with open(filename, "w") as f:
+            if stdout_filename:
+                with open(stdout_filename, "w") as f:
                     f.write(output + "\n")
             else:
                 print(output)
-
         elif cmd == "type":
                 if len(args) == 1:
                     print(f"{cmd} is a shell builtin")
@@ -134,14 +132,14 @@ def main():
                             print(f"{target} not found")
         elif cmd == "pwd":
             curr_dir = os.getcwd()
-            if filename:
-                with open(filename, "w") as f:
-                    f.write(curr_dir + "\n")
+            if stdout_filename:
+                with open(stdout_filename, "w") as f:
+                    f.write(output + "\n")
             else:
-                print(curr_dir)
+                print(output)
         elif cmd == "cd":
             if len(args) < 2:
-                print("cd: missing argument")
+                print("cd: missing argument",file=sys.stderr)
             elif args[1] == "~":
                 home = os.getenv('HOME')
                 os.chdir(home)
@@ -150,7 +148,7 @@ def main():
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    print(f"{cmd}: {args[1]}: No such file or directory")
+                    print(f"{cmd}: {args[1]}: No such file or directory",file=sys.stderr)
         else:
             
             program = args[0]
@@ -158,7 +156,7 @@ def main():
             path = get_path(program)
 
             if path is None:
-                print(f"{program}: command not found")
+                print(f"{program}: command not found",file=sys.stderr)
             else:
                 stdout_file = open(stdout_filename, "w") if stdout_filename else None
                 stderr_file = open(stderr_filename, "w") if stderr_filename else None
@@ -175,4 +173,5 @@ def main():
                         stdout_file.close()
                     if stderr_file:
                         stderr_file.close()
+if __name__ == "__main__":
     main()
