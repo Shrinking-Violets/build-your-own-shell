@@ -95,7 +95,6 @@ def main():
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
             
-        
         if stderr_idx != -1:
             stderr_filename = args[stderr_idx +1]
             
@@ -134,11 +133,11 @@ def main():
                             print(f"{target} not found")
         elif cmd == "pwd":
             curr_dir = os.getcwd()
-            if stdout_filename:
-                with open(stdout_filename, "w") as f:
-                    f.write(output + "\n")
             if stderr_filename:
                 open(stderr_filename, "w").close()
+            if stdout_filename:
+                with open(stdout_filename, "w") as f:
+                    f.write(curr_dir + "\n")
             else:
                 print(curr_dir)
         elif cmd == "cd":
@@ -152,7 +151,11 @@ def main():
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    print(f"{cmd}: {args[1]}: No such file or directory",file=sys.stderr)
+                    if stderr_filename:
+                        with open(stderr_filename, "w") as f:
+                            print("cd: missing argument", file=f)
+                    else:
+                        print("cd: missing argument", file=sys.stderr)
         else:
             
             program = args[0]
