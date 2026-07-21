@@ -109,15 +109,16 @@ def main():
             break
         elif cmd == "echo":
             output = " ".join(args[1:])
-
+            if stderr_filename:
+                open(stderr_filename, "w").close()
             if stdout_filename:
                 with open(stdout_filename, "w") as f:
                     f.write(output + "\n")
-            if stderr_filename:
-                open(stderr_filename, "w").close()
             else:
                 print(output)
         elif cmd == "type":
+                if stderr_filename:
+                    open(stderr_filename, "w").close()
                 if len(args) == 1:
                     print(f"{cmd} is a shell builtin")
                 else:
@@ -127,8 +128,7 @@ def main():
                         print(f"{target} is a shell builtin")
                     else:
                         path = get_path(target)
-                        if stderr_filename:
-                            open(stderr_filename, "w").close()
+                        
                         if path:
                             print(f"{target} is {path}")
                         else:
@@ -143,21 +143,27 @@ def main():
             else:
                 print(curr_dir)
         elif cmd == "cd":
+            message = "cd: missing argument"
             if len(args) < 2:
-                print("cd: missing argument",file=sys.stderr)
+                if stderr_filename:
+                    with open(stderr_filename, "w") as f:
+                        print(message, file=f)
+                else:
+                    print(message, file=sys.stderr)
             elif args[1] == "~":
                 home = os.getenv('HOME')
                 os.chdir(home)
             else:
                 cd_dir = args[1]
+                message = f"cd: {args[1]}: No such file or directory"
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
                     if stderr_filename:
                         with open(stderr_filename, "w") as f:
-                            print("cd: missing argument", file=f)
+                            print(message, file=f)
                     else:
-                        print("cd: missing argument", file=sys.stderr)
+                        print(message, file=sys.stderr)
         else:
             
             program = args[0]
@@ -165,7 +171,13 @@ def main():
             path = get_path(program)
 
             if path is None:
-                print(f"{program}: command not found",file=sys.stderr)
+                message = f"{program}: command not found"
+
+                if stderr_filename:
+                    with open(stderr_filename, "w") as f:
+                        print(message, file=f)
+                else:
+                    print(message, file=sys.stderr)
             else:
                 stdout_file = open(stdout_filename, "w") if stdout_filename else None
                 stderr_file = open(stderr_filename, "w") if stderr_filename else None
