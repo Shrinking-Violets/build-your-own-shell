@@ -80,18 +80,31 @@ def main():
         cmd = args
         if not cmd:
             continue
-        
-        idx = -1
+        stdout_idx = -1
+        stderr_idx = -1
+        stdout_filename = None
+        stderr_filename = None
+
         if ">" in args:
-            idx = args.index(">")
+            stdout_idx = args.index(">")
         elif "1>" in args:
-            idx = args.index("1>")
+            stdout_idx = args.index("1>")
+        if "2>" in args:
+            stderr_idx = args.index("2>")
 
         filename = None
-        if idx != -1:
-            filename = args[idx + 1]
-            args = args[:idx]
-
+        if stdout_idx != -1:
+            stdout_filename = args[stdout_idx + 1]
+            args = args[:stdout_idx]
+        
+        if stderr_idx != -1:
+            stderr_filename = args[stderr_idx +1]
+            args = args[:stderr_idx]
+        for idx in sorted(
+            [i for i in [stdout_idx, stderr_idx] if i != -1],
+            reverse=True,
+        ):
+            del args[idx:idx+2]
         cmd = args[0]
 
         if cmd == "exit":
