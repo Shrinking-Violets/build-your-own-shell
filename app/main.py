@@ -127,6 +127,8 @@ def main():
                         print(f"{target} is a shell builtin")
                     else:
                         path = get_path(target)
+                        if stderr_filename:
+                            open(stderr_filename, "w").close()
                         if path:
                             print(f"{target} is {path}")
                         else:
