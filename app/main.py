@@ -69,9 +69,10 @@ def parse_command(command):
         args.append(current)
 
     return args
-def print_error(message, stderr_filename):
+def print_error(message, stderr_filename, append = False):
+    mode = "a" if append else "w"
     if stderr_filename:
-        with open(stderr_filename, "w") as f:
+        with open(stderr_filename, mode) as f:
             print(message, file=f)
     else:
         print(message, file=sys.stderr)
@@ -104,7 +105,7 @@ def main():
         stdout_filename = None
         stderr_filename = None
         append_stdout = False
-
+        append_stderr = False
         if ">" in args:
             stdout_idx = args.index(">")
         elif "1>" in args:
@@ -117,6 +118,9 @@ def main():
         elif "1>>" in args:
             stdout_idx = args.index("1>>")
             append_stdout = True
+        if "2>>" in args:
+            stderr_idx = args.index("2>>")
+            append_stderr = False
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
             
@@ -168,7 +172,7 @@ def main():
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    print_error(message, stderr_filename)
+                    print_error(message, stderr_filename, append_stderr)
         else:
             
             program = args[0]
