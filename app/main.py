@@ -135,8 +135,8 @@ def main():
         elif cmd == "echo":
             output = " ".join(args[1:])
             create_stderr_file(stderr_filename)
-            print_output(output, stdout_filename)
-            append_stdout
+            print_output(output, stdout_filename, append_stdout)
+            
         elif cmd == "type":
                 create_stderr_file(stderr_filename)
                 if len(args) == 1:
@@ -153,8 +153,8 @@ def main():
         elif cmd == "pwd":
             curr_dir = os.getcwd()
             create_stderr_file(stderr_filename)
-            print_output(output, stdout_filename)
-            append_stdout
+            print_output(output, stdout_filename, append_stdout)
+            
         elif cmd == "cd":
             message = "cd: missing argument"
             if len(args) < 2:
