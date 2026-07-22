@@ -162,7 +162,7 @@ def main():
         elif cmd == "cd":
             message = "cd: missing argument"
             if len(args) < 2:
-                print_error(f"{program}: command not found", stderr_filename)    
+                print_error(f"{program}: command not found", stderr_filename, append_stderr)    
             elif args[1] == "~":
                 home = os.getenv('HOME')
                 os.chdir(home)
@@ -172,7 +172,7 @@ def main():
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    print_error(message, stderr_filename, append_stderr)
+                    print_error(message, stderr_filename, append_stderr, append_stderr)
         else:
             
             program = args[0]
