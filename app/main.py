@@ -75,15 +75,10 @@ def print_error(message, stderr_filename):
             print(message, file=f)
     else:
         print(message, file=sys.stderr)
-def print_output(message, stdout_filename):
+def print_output(message, stdout_filename, append = False):
+    mode = "a" if append else "w"
     if stdout_filename:
-        with open(stdout_filename, "w") as f:
-            print(message, file=f)
-    else:
-        print(message)
-def print_output1(message, stdout_filename):
-    if stdout_filename:
-        with open(stdout_filename, "a") as f:
+        with open(stdout_filename, mode) as f:
             print(message, file=f)
     else:
         print(message)
@@ -108,6 +103,7 @@ def main():
         stderr_idx = -1
         stdout_filename = None
         stderr_filename = None
+        append_stdout = False
 
         if ">" in args:
             stdout_idx = args.index(">")
@@ -116,9 +112,11 @@ def main():
         if "2>" in args:
             stderr_idx = args.index("2>")
         if  ">>" in args :
-            stdout_idx = args.index(">>")         
+            stdout_idx = args.index(">>")
+            append_stdout = True         
         elif "1>>" in args:
             stdout_idx = args.index("1>>")
+            append_stdout = True
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
             
@@ -138,6 +136,7 @@ def main():
             output = " ".join(args[1:])
             create_stderr_file(stderr_filename)
             print_output(output, stdout_filename)
+            append_stdout
         elif cmd == "type":
                 create_stderr_file(stderr_filename)
                 if len(args) == 1:
@@ -155,6 +154,7 @@ def main():
             curr_dir = os.getcwd()
             create_stderr_file(stderr_filename)
             print_output(output, stdout_filename)
+            append_stdout
         elif cmd == "cd":
             message = "cd: missing argument"
             if len(args) < 2:
@@ -178,8 +178,9 @@ def main():
             if path is None:
                 print_error(f"{program}: command not found", stderr_filename)
             else:
-                stdout_file = open(stdout_filename, "w") if stdout_filename else None
-                stderr_file = open(stderr_filename, "w") if stderr_filename else None
+                mode = "a" if append_stdout else "w"
+                stdout_file = open(stdout_filename, mode) if stdout_filename else None
+                stderr_file = open(stderr_filename, mode) if stderr_filename else None
 
                 try:
                     subprocess.run(
