@@ -110,7 +110,10 @@ def main():
             stdout_idx = args.index(">")
         elif "1>" in args:
             stdout_idx = args.index("1>")
-        if "2>" in args:
+        if "2>>" in args:
+            stderr_idx = args.index("2>>")
+            append_stderr = True
+        elif "2>" in args:
             stderr_idx = args.index("2>")
         if  ">>" in args :
             stdout_idx = args.index(">>")
@@ -118,9 +121,7 @@ def main():
         elif "1>>" in args:
             stdout_idx = args.index("1>>")
             append_stdout = True
-        if "2>>" in args:
-            stderr_idx = args.index("2>>")
-            append_stderr = True
+        
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
             
