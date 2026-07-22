@@ -81,6 +81,12 @@ def print_output(message, stdout_filename):
             print(message, file=f)
     else:
         print(message)
+def print_output1(message, stdout_filename):
+    if stdout_filename:
+        with open(stdout_filename, "a") as f:
+            print(message, file=f)
+    else:
+        print(message)
 def create_stderr_file(stderr_filename):
     if stderr_filename:
         open(stderr_filename, "w").close()
@@ -109,7 +115,10 @@ def main():
             stdout_idx = args.index("1>")
         if "2>" in args:
             stderr_idx = args.index("2>")
-
+        if  ">>" in args :
+            stdout_idx = args.index(">>")         
+        elif "1>>" in args:
+            stdout_idx = args.index("1>>")
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
             
