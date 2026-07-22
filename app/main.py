@@ -140,7 +140,7 @@ def main():
             break
         elif cmd == "echo":
             output = " ".join(args[1:])
-            create_stderr_file(stderr_filename)
+            create_stderr_file(stderr_filename, append_stderr)
             print_output(output, stdout_filename, append_stdout)
             
         elif cmd == "type":
@@ -158,7 +158,7 @@ def main():
                         print_output(f"{target} not found", stdout_filename)
         elif cmd == "pwd":
             curr_dir = os.getcwd()
-            create_stderr_file(stderr_filename)
+            create_stderr_file(stderr_filename, append_stderr)
             print_output(curr_dir, stdout_filename, append_stdout)
             
         elif cmd == "cd":
