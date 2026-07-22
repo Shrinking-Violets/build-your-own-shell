@@ -153,7 +153,7 @@ def main():
         elif cmd == "pwd":
             curr_dir = os.getcwd()
             create_stderr_file(stderr_filename)
-            print_output(output, stdout_filename)
+            print_output(curr_dir, stdout_filename, append_stdout)
             
         elif cmd == "cd":
             message = "cd: missing argument"
