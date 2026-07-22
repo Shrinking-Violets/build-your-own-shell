@@ -83,9 +83,10 @@ def print_output(message, stdout_filename, append = False):
             print(message, file=f)
     else:
         print(message)
-def create_stderr_file(stderr_filename):
+def create_stderr_file(stderr_filename, append = False):
     if stderr_filename:
-        open(stderr_filename, "w").close()
+        mode = "a" if append else "w"
+        open(stderr_filename, mode).close()
 
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
@@ -143,7 +144,7 @@ def main():
             print_output(output, stdout_filename, append_stdout)
             
         elif cmd == "type":
-                create_stderr_file(stderr_filename)
+                create_stderr_file(stderr_filename, append_stderr)
                 if len(args) == 1:
                     print(f"{cmd} is a shell builtin")
                 else:
@@ -184,8 +185,9 @@ def main():
                 print_error(f"{program}: command not found", stderr_filename, append_stderr)
             else:
                 mode = "a" if append_stdout else "w"
+                stderr_mode = "a" if append_stderr else "w"
                 stdout_file = open(stdout_filename, mode) if stdout_filename else None
-                stderr_file = open(stderr_filename, mode) if stderr_filename else None
+                stderr_file = open(stderr_filename, stderr_mode) if stderr_filename else None
 
                 try:
                     subprocess.run(
