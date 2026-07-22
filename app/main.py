@@ -120,7 +120,7 @@ def main():
             append_stdout = True
         if "2>>" in args:
             stderr_idx = args.index("2>>")
-            append_stderr = False
+            append_stderr = True
         if stdout_idx != -1:
             stdout_filename = args[stdout_idx + 1]
             
