@@ -172,7 +172,7 @@ def main():
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    print_error(message, stderr_filename, append_stderr, append_stderr)
+                    print_error(message, stderr_filename, append_stderr)
         else:
             
             program = args[0]
@@ -180,7 +180,7 @@ def main():
             path = get_path(program)
 
             if path is None:
-                print_error(f"{program}: command not found", stderr_filename)
+                print_error(f"{program}: command not found", stderr_filename, append_stderr)
             else:
                 mode = "a" if append_stdout else "w"
                 stdout_file = open(stdout_filename, mode) if stdout_filename else None
