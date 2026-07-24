@@ -89,76 +89,74 @@ def create_stderr_file(stderr_filename, append = False):
     if stderr_filename:
         mode = "a" if append else "w"
         open(stderr_filename, mode).close()
+def longest_common_prefix(matches):
+        if not matches:
+            return ""
+        prefix = matches[0]
+        for match in matches[1:]:
+            while not match.startswith(prefix):
+                prefix = prefix[:-1]
+                if prefix == "":
+                    return ""
 
+        return prefix
 
 last_text = ""
 waiting_for_second_tab = False
 def path_completer(text, state):
-    path_env = os.environ.get("PATH", "")
-    directories = path_env.split(os.pathsep)
-    command = ["echo", "exit", "type", "pwd", "cd"]
-    matches = set()
-    lcp = longest_common_prefix(matches)
-    global last_text, waiting_for_second_tab
-    for cmd in command:
-        if cmd.startswith(text):
-            matches.add(cmd)
+        path_env = os.environ.get("PATH", "")
+        directories = path_env.split(os.pathsep)
+        command = ["echo", "exit", "type", "pwd", "cd"]
+        matches = set()
+        
+        global last_text, waiting_for_second_tab
+        for cmd in command:
+            if cmd.startswith(text):
+                matches.add(cmd)
 
-    for directory in directories:
-        if not os.path.isdir(directory):
-            continue
+        for directory in directories:
+            if not os.path.isdir(directory):
+                continue
 
-        for file in os.listdir(directory):
-            if file.startswith(text):
-                full_path = os.path.join(directory, file)
+            for file in os.listdir(directory):
+                if file.startswith(text):
+                    full_path = os.path.join(directory, file)
 
-                if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
-                    matches.add(file)
-    matches = sorted(matches)
-    
-    if len(matches) == 0:
-        last_text = ""
-        waiting_for_second_tab = False
-        return None
-    elif len(matches) == 1:
-            if state == 0:
-                last_text = ""
-                waiting_for_second_tab = False
-                return matches[0] + " "
-            else:
-                return None
-    elif len(lcp) > len(text):
-        return lcp
-    elif len(matches) > 1:
-        if text == last_text and waiting_for_second_tab:
-            print()
-            print("  ".join(matches))
-            print("$ " + text, end="", flush=True)
+                    if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
+                        matches.add(file)
+        matches = sorted(matches)
+        lcp = longest_common_prefix(matches)
+        if len(matches) == 0:
             last_text = ""
             waiting_for_second_tab = False
             return None
-        else:
-            print("\x07", end="")
-            last_text = text
-            waiting_for_second_tab = True
-            return None
-    
+        elif len(matches) == 1:
+                if state == 0:
+                    last_text = ""
+                    waiting_for_second_tab = False
+                    return matches[0] + " "
+                else:
+                    return None
+        elif len(lcp) > len(text):
+            return lcp
+        elif len(matches) > 1:
+            if text == last_text and waiting_for_second_tab:
+                print()
+                print("  ".join(matches))
+                print("$ " + text, end="", flush=True)
+                last_text = ""
+                waiting_for_second_tab = False
+                return None
+            else:
+                print("\x07", end="")
+                last_text = text
+                waiting_for_second_tab = True
+                return None
+        
 readline.set_completer(path_completer)
 readline.parse_and_bind("tab: complete")
 
-def longest_common_prefix(matches):
-    if not matches:
-        return ""
-    prefix = matches[0]
-    for match in matches[1:]:
-        while not match.startswith(prefix):
-            prefix = prefix[:-1]
-            if prefix == "":
-                return ""
-
-    return prefix
-          
-
+   
     
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
