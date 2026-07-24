@@ -96,7 +96,7 @@ waiting_for_second_tab = False
 def path_completer(text, state):
     path_env = os.environ.get("PATH", "")
     directories = path_env.split(os.pathsep)
-    command = ["echo", "exit"]
+    command = ["echo", "exit", "type", "pwd", "cd"]
     matches = set()
     global last_text, waiting_for_second_tab
     for cmd in command:
@@ -143,8 +143,19 @@ def path_completer(text, state):
 readline.set_completer(path_completer)
 readline.parse_and_bind("tab: complete")
 
-'''def completer(text, state):
-    matches = find_matches(text)'''
+def longest_common_prefix(matches):
+    if not matches:
+        return ""
+    prefix = matches[0]
+    for match in matches[1:]:
+        while not match.startswith(prefix):
+            prefix = prefix[:-1]
+            if prefix == "":
+                return ""
+
+    return prefix
+          
+
     
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
