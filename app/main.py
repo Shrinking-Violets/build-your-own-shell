@@ -108,18 +108,17 @@ def path_completer(text, state):
 
         for file in os.listdir(directory):
             if file.startswith(text):
-                full_path = os.path.join(directory, file)
+                full_path = os.path.join(directory, path_env)
 
                 if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
                     matches.append(file)
     matches = sorted(matches)
     if state < len(matches):
         match = matches[state]
-
         return match + " "
     else:
         return None
-readline.set_completer_delims(' \t\n=')
+
 readline.set_completer(path_completer)
 readline.parse_and_bind("tab: complete")
 
