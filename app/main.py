@@ -20,7 +20,7 @@ def get_path(command):
                 return full_path
     return None        
 def parse_command(command):
-    args = []
+    args = []   
     current = ""
     is_single_quote = False
     is_double_quote = False
@@ -99,8 +99,20 @@ def list_completer(text, state):
 readline.set_completer(list_completer)
 readline.parse_and_bind("tab: complete")
 def path_completer(text, state):
-    expanded_text = os.path.expanduser(text)
-    matches = glob.glob(expanded_text )
+    expanded_text = os.environ.get("PATH", "")
+    path_env = os.environ.get("PATH", "")
+    directories = path_env.split(os.pathsep)
+    for directory in directories:
+        if not os.path.isdir(directory):
+            continue
+
+        for file in os.listdir(directory):
+            if file.startswith(text):
+                full_path = os.path.join(directory, file)
+
+                if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
+                    directories.append(file)
+    matches = set()
     if state < len(matches):
         match = matches[state]
         if os.path.isdir(match):
