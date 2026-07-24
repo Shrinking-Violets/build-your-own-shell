@@ -99,9 +99,9 @@ def list_completer(text, state):
 readline.set_completer(list_completer)
 readline.parse_and_bind("tab: complete")
 def path_completer(text, state):
-    expanded_text = os.environ.get("PATH", "")
     path_env = os.environ.get("PATH", "")
     directories = path_env.split(os.pathsep)
+    matches = set()
     for directory in directories:
         if not os.path.isdir(directory):
             continue
@@ -111,12 +111,11 @@ def path_completer(text, state):
                 full_path = os.path.join(directory, file)
 
                 if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
-                    directories.append(file)
-    matches = set()
+                    matches.append(file)
+    matches = sorted(matches)
     if state < len(matches):
         match = matches[state]
-        if os.path.isdir(match):
-            return match + '/'
+
         return match + " "
     else:
         return None
