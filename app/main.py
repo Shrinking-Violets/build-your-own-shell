@@ -117,7 +117,7 @@ def path_completer(text, state):
         match = matches[state]
         if os.path.isdir(match):
             return match + '/'
-        return match
+        return match + ""
     else:
         return None
 readline.set_completer_delims(' \t\n=')
