@@ -116,18 +116,20 @@ def path_completer(text, state):
     matches = sorted(matches)
     
     if len(matches) == 0:
-        print('\x07')
+        last_text = ""
+        waiting_for_second_tab = False
         return None
     elif len(matches) == 1:
             if state == 0:
-                return matches[0] + " "
                 last_text = ""
                 waiting_for_second_tab = False
+                return matches[0] + " "
             else:
                 return None
     elif len(matches) > 1:
         if text == last_text and waiting_for_second_tab:
             print("  ".join(matches))
+            print("$ " + text, end="", flush=True)
             last_text = ""
             waiting_for_second_tab = False
             return None
