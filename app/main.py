@@ -108,10 +108,10 @@ def path_completer(text, state):
 
         for file in os.listdir(directory):
             if file.startswith(text):
-                full_path = os.path.join(directory, path_env)
+                full_path = os.path.join(directory, file)
 
                 if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
-                    matches.append(file)
+                    matches.add(file)
     matches = sorted(matches)
     if state < len(matches):
         match = matches[state]
