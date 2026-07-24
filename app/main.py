@@ -128,8 +128,8 @@ def path_completer(text, state):
                 return None
     elif len(matches) > 1:
         if text == last_text and waiting_for_second_tab:
-            #print("  ".join(matches))
             print()
+            print("  ".join(matches))
             print("$ " + text, end="", flush=True)
             last_text = ""
             waiting_for_second_tab = False
