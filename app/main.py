@@ -137,11 +137,11 @@ def path_completer(text, state):
                     return matches[0] + " "
                 else:
                     return None
-                print("TEXT:", repr(text))
-                print("MATCHES:", matches)
-                print("LCP:", repr(lcp))
         elif len(lcp) > len(text):
-            return lcp
+            if state == 0:
+                return lcp
+            else:
+                return None
         elif len(matches) > 1:
             if text == last_text and waiting_for_second_tab:
                 print()
@@ -159,8 +159,6 @@ def path_completer(text, state):
 readline.set_completer(path_completer)
 readline.parse_and_bind("tab: complete")
 
-   
-    
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
     while True:
@@ -235,19 +233,17 @@ def main():
             print_output(curr_dir, stdout_filename, append_stdout)
             
         elif cmd == "cd":
-            message = "cd: missing argument"
             if len(args) < 2:
-                print_error(f"{program}: command not found", stderr_filename, append_stderr)    
+                print_error("cd: missing argument", stderr_filename, append_stderr)    
             elif args[1] == "~":
                 home = os.getenv('HOME')
                 os.chdir(home)
             else:
                 cd_dir = args[1]
-                message = f"cd: {args[1]}: No such file or directory"
                 if os.path.isdir(cd_dir):
                     os.chdir(cd_dir)
                 else:
-                    print_error(message, stderr_filename, append_stderr)
+                    print_error(f"cd: {args[1]}: No such file or directory", stderr_filename, append_stderr)
         else:
             
             program = args[0]
