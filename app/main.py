@@ -101,7 +101,7 @@ def create_stderr_file(stderr_filename, append = False):
 def path_completer(text, state):
     path_env = os.environ.get("PATH", "")
     directories = path_env.split(os.pathsep)
-    command = ["echo ", "exit "]
+    command = ["echo", "exit"]
     matches = set()
 
     for cmd in command:
