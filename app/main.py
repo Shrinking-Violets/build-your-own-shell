@@ -100,7 +100,7 @@ readline.set_completer(list_completer)
 readline.parse_and_bind("tab: complete")
 def path_completer(text, state):
     expanded_text = os.path.expanduser(text)
-    matches = glob.glob(expanded_text + "*")
+    matches = glob.glob(expanded_text )
     if state < len(matches):
         match = matches[state]
         if os.path.isdir(match):
