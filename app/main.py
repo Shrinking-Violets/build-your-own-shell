@@ -2,6 +2,7 @@ import sys
 import os
 import subprocess
 import readline
+import glob
 
 def get_path(command):
     path_env = os.environ.get("PATH", "")
@@ -97,6 +98,20 @@ def list_completer(text, state):
         return None
 readline.set_completer(list_completer)
 readline.parse_and_bind("tab: complete")
+def path_completer(text, state):
+    expanded_text = os.path.expanduser(text)
+    matches = glob.glob(expanded_text + "*")
+    if state < len(matches):
+        match = matches[state]
+        if os.path.isdir(match):
+            return match + '/'
+        return match
+    else:
+        return None
+readline.set_completer_delims(' \t\n=')
+readline.set_completer(path_completer)
+readline.parse_and_bind("tab: complete")
+
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
     while True:
