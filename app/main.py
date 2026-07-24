@@ -98,6 +98,7 @@ def path_completer(text, state):
     directories = path_env.split(os.pathsep)
     command = ["echo", "exit", "type", "pwd", "cd"]
     matches = set()
+    lcp = longest_common_prefix(matches)
     global last_text, waiting_for_second_tab
     for cmd in command:
         if cmd.startswith(text):
@@ -126,6 +127,8 @@ def path_completer(text, state):
                 return matches[0] + " "
             else:
                 return None
+    elif len(lcp) > len(text):
+        return lcp
     elif len(matches) > 1:
         if text == last_text and waiting_for_second_tab:
             print()
