@@ -89,19 +89,25 @@ def create_stderr_file(stderr_filename, append = False):
     if stderr_filename:
         mode = "a" if append else "w"
         open(stderr_filename, mode).close()
-def list_completer(text, state):
-    command = ["echo ", "exit "]
-    options = [cmd for cmd in command if cmd.startswith(text)]
-    if state < len(options):
-        return options[state]
-    else:
-        return None
-readline.set_completer(list_completer)
-readline.parse_and_bind("tab: complete")
+#def list_completer(text, state):
+    #command = ["echo ", "exit "]
+    #options = [cmd for cmd in command if cmd.startswith(text)]
+    #if state < len(options):
+     #   return options[state]
+    #else:
+     #   return None
+#readline.set_completer(list_completer)
+#readline.parse_and_bind("tab: complete")
 def path_completer(text, state):
     path_env = os.environ.get("PATH", "")
     directories = path_env.split(os.pathsep)
+    command = ["echo ", "exit "]
     matches = set()
+
+    for cmd in command:
+        if cmd.startswith(text):
+            matches.add(cmd)
+
     for directory in directories:
         if not os.path.isdir(directory):
             continue
