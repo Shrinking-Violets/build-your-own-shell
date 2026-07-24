@@ -89,7 +89,7 @@ def create_stderr_file(stderr_filename, append = False):
         mode = "a" if append else "w"
         open(stderr_filename, mode).close()
 def list_completer(text, state):
-    command = ["echo", "exit"]
+    command = ["echo ", "exit "]
     options = [cmd for cmd in command if cmd.startswith(text)]
     if state < len(options):
         return options[state]
