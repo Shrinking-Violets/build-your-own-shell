@@ -89,21 +89,16 @@ def create_stderr_file(stderr_filename, append = False):
     if stderr_filename:
         mode = "a" if append else "w"
         open(stderr_filename, mode).close()
-#def list_completer(text, state):
-    #command = ["echo ", "exit "]
-    #options = [cmd for cmd in command if cmd.startswith(text)]
-    #if state < len(options):
-     #   return options[state]
-    #else:
-     #   return None
-#readline.set_completer(list_completer)
-#readline.parse_and_bind("tab: complete")
+
+
+last_text = ""
+waiting_for_second_tab = False
 def path_completer(text, state):
     path_env = os.environ.get("PATH", "")
     directories = path_env.split(os.pathsep)
     command = ["echo", "exit"]
     matches = set()
-
+    global last_text, waiting_for_second_tab
     for cmd in command:
         if cmd.startswith(text):
             matches.add(cmd)
@@ -119,15 +114,35 @@ def path_completer(text, state):
                 if os.path.isfile(full_path) and os.access(full_path, os.X_OK):
                     matches.add(file)
     matches = sorted(matches)
-    if state < len(matches):
-        match = matches[state]
-        return match + " "
-    else:
+    
+    if len(matches) == 0:
+        print('\x07')
         return None
-
+    elif len(matches) == 1:
+            if state == 0:
+                return matches[0] + " "
+                last_text = ""
+                waiting_for_second_tab = False
+            else:
+                return None
+    elif len(matches) > 1:
+        if text == last_text and waiting_for_second_tab:
+            print("  ".join(matches))
+            last_text = ""
+            waiting_for_second_tab = False
+            return None
+        else:
+            print("\x07", end="")
+            last_text = text
+            waiting_for_second_tab = True
+            return None
+    
 readline.set_completer(path_completer)
 readline.parse_and_bind("tab: complete")
 
+'''def completer(text, state):
+    matches = find_matches(text)'''
+    
 def main():
     builtin_comm = {"exit", "echo", "type", "pwd", "cd"}
     while True:
