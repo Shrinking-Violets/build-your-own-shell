@@ -90,16 +90,16 @@ def create_stderr_file(stderr_filename, append = False):
         mode = "a" if append else "w"
         open(stderr_filename, mode).close()
 def longest_common_prefix(matches):
-        if not matches:
-            return ""
-        prefix = matches[0]
-        for match in matches[1:]:
-            while not match.startswith(prefix):
-                prefix = prefix[:-1]
-                if prefix == "":
-                    return ""
+    if not matches:
+        return ""
+    prefix = matches[0]
+    for match in matches[1:]:
+        while not match.startswith(prefix):
+            prefix = prefix[:-1]
+            if prefix == "":
+                return ""
 
-        return prefix
+    return prefix
 
 last_text = ""
 waiting_for_second_tab = False
@@ -137,6 +137,9 @@ def path_completer(text, state):
                     return matches[0] + " "
                 else:
                     return None
+                print("TEXT:", repr(text))
+                print("MATCHES:", matches)
+                print("LCP:", repr(lcp))
         elif len(lcp) > len(text):
             return lcp
         elif len(matches) > 1:
